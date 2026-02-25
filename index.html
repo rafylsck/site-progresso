@@ -2,143 +2,138 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <meta name="theme-color" content="#0b0b10" />
-  <title>Progresso de Estudo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#07070a" />
+
+  <!-- Melhor sensação de “app” quando adicionar à Tela de Início -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <title>Progresso</title>
 
   <style>
     :root{
-      --bg0:#07070a;
-      --bg1:#0b0b10;
-      --glass: rgba(255,255,255,.06);
-      --glass2: rgba(255,255,255,.10);
-      --stroke: rgba(255,255,255,.12);
+      --bg0:#05050a;
+      --bg1:#0a0a12;
 
-      --white: #f7f7fb;
-      --muted: rgba(247,247,251,.75);
+      --white:#f7f7fb;
+      --muted:rgba(247,247,251,.72);
 
-      --purple: #8b5cf6;
+      --purple:#8b5cf6;
       --purple2:#a78bfa;
       --red:#ef4444;
-      --black:#000;
 
-      --shadow: 0 14px 40px rgba(0,0,0,.55);
-      --shadow2: 0 8px 18px rgba(0,0,0,.35);
+      --glass: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.12);
+      --shadow: 0 18px 55px rgba(0,0,0,.60);
+      --shadow2: 0 10px 24px rgba(0,0,0,.35);
 
-      --radius: 20px;
-      --radius2: 14px;
+      --radius: 22px;
+      --radius2: 16px;
 
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
     }
 
     *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family: var(--sans);
+    html, body{
+      height: 100%;
+      margin: 0;
+      background: var(--bg0);
       color: var(--white);
-      background: radial-gradient(1200px 800px at 20% 10%, rgba(139,92,246,.35), transparent 55%),
-                  radial-gradient(900px 700px at 80% 20%, rgba(239,68,68,.20), transparent 55%),
-                  radial-gradient(900px 700px at 55% 95%, rgba(167,139,250,.22), transparent 60%),
-                  linear-gradient(180deg, var(--bg0), var(--bg1));
-      overflow-x:hidden;
+      font-family: var(--sans);
+      /* evita “branco” em volta quando dá bounce no iOS */
+      -webkit-tap-highlight-color: transparent;
     }
 
-    /* iOS-ish safe area */
+    body{
+      background:
+        radial-gradient(1200px 800px at 20% 5%, rgba(139,92,246,.33), transparent 55%),
+        radial-gradient(900px 700px at 82% 12%, rgba(239,68,68,.18), transparent 56%),
+        radial-gradient(900px 800px at 55% 95%, rgba(167,139,250,.16), transparent 62%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overscroll-behavior: none; /* reduz bounce feio */
+    }
+
+    /* Safe area: deixa o FUNDO preencher topo/baixo (sem faixa clara) */
+    .safe{
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      min-height: 100vh;
+      background: transparent;
+    }
+
     .wrap{
-      max-width: 980px;
+      max-width: 860px;
       margin: 0 auto;
-      padding: 22px 18px calc(24px + env(safe-area-inset-bottom));
+      padding: 18px 16px 22px;
     }
 
-    .topbar{
+    /* Header minimal */
+    .top{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap: 12px;
-      margin-top: env(safe-area-inset-top);
+      margin-bottom: 14px;
     }
 
     .brand{
       display:flex;
       align-items:center;
       gap: 12px;
+      min-width: 0;
     }
 
     .logo{
-      width: 42px; height: 42px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(139,92,246,.95), rgba(239,68,68,.65));
-      box-shadow: 0 10px 26px rgba(139,92,246,.25);
+      width: 44px; height: 44px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(139,92,246,.95), rgba(239,68,68,.55));
+      box-shadow: 0 14px 28px rgba(139,92,246,.18);
       position:relative;
       overflow:hidden;
+      flex: 0 0 auto;
     }
     .logo::after{
       content:"";
-      position:absolute; inset:-40%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.40), transparent 55%);
-      transform: rotate(20deg);
+      position:absolute; inset:-55%;
+      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.35), transparent 55%);
+      transform: rotate(18deg);
     }
 
     .title{
-      line-height: 1.05;
+      min-width:0;
+      line-height:1.05;
     }
     .title h1{
       margin:0;
       font-size: 18px;
-      letter-spacing: .2px;
+      letter-spacing:.2px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
     }
     .title p{
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 12.5px;
-    }
-
-    .pill{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.12);
-      box-shadow: var(--shadow2);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-
-    .pill .dot{
-      width: 10px; height: 10px; border-radius: 999px;
-      background: linear-gradient(180deg, var(--purple2), var(--purple));
-      box-shadow: 0 0 0 4px rgba(139,92,246,.14);
-    }
-    .pill .txt{
+      margin: 5px 0 0;
       font-size: 12.5px;
       color: var(--muted);
-      white-space:nowrap;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
     }
-    .pill code{
+
+    .chip{
       font-family: var(--mono);
-      color: rgba(247,247,251,.9);
       font-size: 12px;
-      padding: 2px 8px;
+      padding: 8px 10px;
       border-radius: 999px;
-      background: rgba(0,0,0,.22);
+      background: rgba(0,0,0,.24);
       border: 1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow2);
+      white-space: nowrap;
     }
 
-    /* Main cards */
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-      margin-top: 16px;
-    }
-    @media(min-width: 860px){
-      .grid{ grid-template-columns: 1.2fr .8fr; align-items: start; }
-    }
-
+    /* Main card */
     .card{
       border-radius: var(--radius);
       background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
@@ -152,58 +147,36 @@
     .card::before{
       content:"";
       position:absolute; inset:-1px;
-      background: radial-gradient(900px 400px at 30% 0%, rgba(139,92,246,.15), transparent 50%),
-                  radial-gradient(700px 400px at 85% 30%, rgba(239,68,68,.10), transparent 55%);
+      background:
+        radial-gradient(900px 420px at 28% 0%, rgba(139,92,246,.14), transparent 52%),
+        radial-gradient(720px 420px at 86% 22%, rgba(239,68,68,.10), transparent 58%);
       pointer-events:none;
     }
 
-    .section{
-      padding: 16px 16px 14px;
-      position:relative;
-      z-index: 1;
-    }
-    .section h2{
-      margin: 0 0 6px;
-      font-size: 14px;
-      letter-spacing:.25px;
-      color: rgba(247,247,251,.92);
-    }
-    .section .sub{
-      margin: 0;
-      color: var(--muted);
-      font-size: 12.5px;
-      line-height: 1.35;
-    }
+    .pad{ padding: 16px; position:relative; z-index:1; }
 
-    /* Progress */
-    .progressBox{
-      padding: 14px 16px 16px;
-      border-top: 1px solid rgba(255,255,255,.10);
-      position:relative;
-      z-index:1;
-    }
-
-    .meters{
+    .row{
       display:flex;
       align-items:baseline;
       justify-content:space-between;
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 12px;
     }
-    .meters .pct{
-      font-size: 30px;
-      font-weight: 750;
-      letter-spacing: -.6px;
-      background: linear-gradient(180deg, rgba(247,247,251,.95), rgba(247,247,251,.70));
-      -webkit-background-clip:text;
-      background-clip:text;
+
+    .pct{
+      font-size: 34px;
+      font-weight: 820;
+      letter-spacing: -0.8px;
+      background: linear-gradient(180deg, rgba(247,247,251,.95), rgba(247,247,251,.68));
+      -webkit-background-clip: text;
+      background-clip: text;
       color: transparent;
     }
-    .meters .count{
+
+    .count{
       font-family: var(--mono);
       font-size: 12px;
       color: rgba(247,247,251,.85);
-      padding: 6px 10px;
+      padding: 7px 10px;
       border-radius: 999px;
       background: rgba(0,0,0,.25);
       border: 1px solid rgba(255,255,255,.10);
@@ -215,24 +188,24 @@
       background: rgba(0,0,0,.35);
       border: 1px solid rgba(255,255,255,.10);
       overflow:hidden;
-      position:relative;
+      margin-top: 10px;
     }
+
     .bar{
       height: 100%;
       width: 0%;
       border-radius: 999px;
       background: linear-gradient(90deg, rgba(139,92,246,.95), rgba(239,68,68,.92));
-      box-shadow: 0 0 24px rgba(139,92,246,.25);
-      transition: width 280ms ease;
+      box-shadow: 0 0 26px rgba(139,92,246,.22);
+      transition: width 260ms ease;
       position:relative;
     }
     .bar::after{
       content:"";
-      position:absolute;
-      inset:0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.20), transparent);
+      position:absolute; inset:0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
       transform: translateX(-60%);
-      animation: shimmer 2.4s infinite linear;
+      animation: shimmer 2.2s infinite linear;
       opacity: .55;
     }
     @keyframes shimmer{
@@ -240,176 +213,189 @@
       100%{ transform: translateX(160%); }
     }
 
-    /* Current concept */
-    .conceptCard{
-      padding: 14px 16px 16px;
-      border-top: 1px solid rgba(255,255,255,.10);
-      position:relative;
-      z-index:1;
+    .divider{
+      height: 1px;
+      background: rgba(255,255,255,.10);
+      margin: 14px 0;
     }
+
     .label{
-      font-size: 11.5px;
-      color: rgba(247,247,251,.70);
-      letter-spacing:.25px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
       display:flex;
+      align-items:center;
       justify-content:space-between;
       gap: 10px;
-      align-items:center;
+      font-size: 11.5px;
+      letter-spacing:.25px;
+      text-transform: uppercase;
+      color: rgba(247,247,251,.65);
+      margin-bottom: 10px;
     }
+
     .tag{
       font-family: var(--mono);
       font-size: 11px;
-      padding: 4px 10px;
+      padding: 5px 10px;
       border-radius: 999px;
       background: rgba(139,92,246,.12);
-      border: 1px solid rgba(139,92,246,.35);
+      border: 1px solid rgba(139,92,246,.34);
       color: rgba(247,247,251,.92);
       white-space: nowrap;
     }
 
     .topic{
-      font-size: 16px;
-      font-weight: 700;
+      margin:0;
+      font-size: 18px;
+      font-weight: 780;
       line-height: 1.25;
-      margin: 0;
     }
+
     .mini{
       margin: 10px 0 0;
-      color: rgba(247,247,251,.78);
-      font-size: 13px;
+      color: rgba(247,247,251,.80);
+      font-size: 13.5px;
       line-height: 1.35;
     }
 
-    /* Buttons */
     .actions{
       display:flex;
       gap: 10px;
       flex-wrap: wrap;
       margin-top: 14px;
     }
+
     .btn{
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.06);
       color: rgba(247,247,251,.92);
-      padding: 10px 12px;
-      border-radius: 14px;
+      padding: 12px 14px;
+      border-radius: 16px;
       cursor:pointer;
       user-select:none;
-      transition: transform .08s ease, background .18s ease, border-color .18s ease;
-      box-shadow: 0 10px 18px rgba(0,0,0,.20);
+      transition: transform .08s ease, filter .18s ease, background .18s ease;
+      box-shadow: 0 12px 20px rgba(0,0,0,.20);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      font-weight: 650;
+      font-weight: 750;
       letter-spacing: .1px;
+      flex: 1 1 140px;
     }
-    .btn:active{ transform: scale(.98); }
-    .btn:disabled{
-      opacity: .55;
-      cursor:not-allowed;
-      transform:none;
-    }
-    .btnPrimary{
-      background: linear-gradient(135deg, rgba(139,92,246,.95), rgba(239,68,68,.75));
+    .btn:active{ transform: scale(.985); }
+    .btn:disabled{ opacity:.55; cursor:not-allowed; transform:none; }
+
+    .primary{
+      background: linear-gradient(135deg, rgba(139,92,246,.95), rgba(239,68,68,.70));
       border-color: rgba(255,255,255,.10);
-      box-shadow: 0 14px 26px rgba(139,92,246,.22);
     }
-    .btnDanger{
-      background: rgba(239,68,68,.12);
-      border-color: rgba(239,68,68,.35);
-    }
-    .btnGhost{
+    .ghost{
       background: rgba(0,0,0,.22);
       border-color: rgba(255,255,255,.10);
-      font-weight: 600;
+      font-weight: 650;
+    }
+    .danger{
+      background: rgba(239,68,68,.10);
+      border-color: rgba(239,68,68,.30);
+      font-weight: 700;
     }
 
-    /* Side card list */
-    .side{
-      padding: 14px 14px 16px;
+    /* Fila compacta e bonita */
+    .queue{
+      margin-top: 14px;
+      border-radius: var(--radius);
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+      box-shadow: var(--shadow2);
     }
-    .sideTop{
+    .queueTop{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      margin-bottom: 10px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,.04);
+      border-bottom: 1px solid rgba(255,255,255,.08);
     }
-    .sideTop h3{
-      margin:0;
+    .queueTop .qTitle{
       font-size: 13px;
-      color: rgba(247,247,251,.92);
+      font-weight: 750;
       letter-spacing:.2px;
     }
-    .sideTop .hint{
-      font-size: 12px;
-      color: var(--muted);
+    .queueTop .qMeta{
       font-family: var(--mono);
-      padding: 4px 10px;
+      font-size: 11px;
+      padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(0,0,0,.22);
+      background: rgba(0,0,0,.25);
       border: 1px solid rgba(255,255,255,.10);
-      white-space:nowrap;
+      color: rgba(247,247,251,.86);
+      white-space: nowrap;
     }
 
     .list{
+      max-height: 360px;
+      overflow:auto;
+      padding: 10px;
       display:flex;
       flex-direction:column;
       gap: 8px;
-      max-height: 440px;
-      overflow:auto;
-      padding-right: 6px;
     }
     .item{
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
       display:flex;
       gap: 10px;
       align-items:flex-start;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
     }
-    .iDot{
-      width: 10px; height: 10px;
-      border-radius: 999px;
-      margin-top: 3px;
-      background: rgba(255,255,255,.22);
+    .dot{
+      width: 10px; height:10px; border-radius:999px;
+      margin-top: 4px;
+      background: rgba(255,255,255,.20);
       box-shadow: 0 0 0 4px rgba(255,255,255,.05);
       flex: 0 0 auto;
     }
-    .item.done .iDot{
+    .item.done .dot{
       background: linear-gradient(180deg, rgba(139,92,246,.95), rgba(239,68,68,.75));
-      box-shadow: 0 0 0 4px rgba(139,92,246,.12);
+      box-shadow: 0 0 0 4px rgba(139,92,246,.10);
     }
-    .iText{
+    .item.current{
+      border-color: rgba(139,92,246,.35);
+      background: rgba(139,92,246,.07);
+    }
+    .text{
+      min-width:0;
       flex: 1 1 auto;
-      min-width: 0;
     }
-    .iText .a{
+    .a{
       font-size: 12px;
-      color: rgba(247,247,251,.70);
+      color: rgba(247,247,251,.68);
       margin-bottom: 3px;
       letter-spacing:.2px;
     }
-    .iText .b{
-      font-size: 13px;
+    .b{
+      font-size: 13.5px;
+      font-weight: 720;
       color: rgba(247,247,251,.92);
-      font-weight: 650;
-      line-height: 1.25;
+      line-height: 1.22;
       word-wrap: break-word;
     }
-    .item.current{
-      border-color: rgba(139,92,246,.40);
-      background: rgba(139,92,246,.08);
+
+    /* scrollbar suave */
+    .list::-webkit-scrollbar{ width: 10px; }
+    .list::-webkit-scrollbar-thumb{
+      background: rgba(255,255,255,.10);
+      border: 2px solid rgba(0,0,0,0);
+      background-clip: padding-box;
+      border-radius: 999px;
     }
 
-    /* Toast */
+    /* Toast minimal */
     .toast{
       position: fixed;
       left: 50%;
       bottom: calc(14px + env(safe-area-inset-bottom));
-      transform: translateX(-50%) translateY(18px);
+      transform: translateX(-50%) translateY(16px);
       background: rgba(0,0,0,.55);
       border: 1px solid rgba(255,255,255,.12);
       backdrop-filter: blur(14px);
@@ -430,176 +416,112 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
-
-    /* Final modal-ish */
-    .banner{
-      display:none;
-      margin-top: 12px;
-      padding: 12px 12px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, rgba(139,92,246,.16), rgba(239,68,68,.10));
-      border: 1px solid rgba(255,255,255,.12);
-    }
-    .banner .b1{
-      font-weight: 800;
-      letter-spacing:.2px;
-      margin-bottom: 4px;
-    }
-    .banner .b2{
-      color: rgba(247,247,251,.75);
-      font-size: 13px;
-      line-height:1.35;
-    }
-
-    /* Scrollbar subtle */
-    .list::-webkit-scrollbar{ width: 10px; }
-    .list::-webkit-scrollbar-thumb{
-      background: rgba(255,255,255,.10);
-      border: 2px solid rgba(0,0,0,0);
-      background-clip: padding-box;
-      border-radius: 999px;
-    }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div class="title">
-          <h1>Site de Progresso</h1>
-          <p>Conceitos em ordem • Salva automático • Estilo iOS</p>
-        </div>
-      </div>
+  <div class="safe">
+    <div class="wrap">
 
-      <div class="pill">
-        <div class="dot"></div>
-        <div class="txt">Progresso salvo em <code>localStorage</code></div>
-      </div>
-    </div>
-
-    <div class="grid">
-
-      <!-- MAIN -->
-      <div class="card">
-        <div class="section">
-          <h2>Ciclo atual</h2>
-          <p class="sub">Clique em <b>Próximo</b> para avançar na lista. <span style="color:rgba(239,68,68,.9)">Reset</span> zera tudo.</p>
-        </div>
-
-        <div class="progressBox">
-          <div class="meters">
-            <div class="pct"><span id="pct">0</span>%</div>
-            <div class="count"><span id="pos">0</span>/<span id="total">0</span></div>
+      <div class="top">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div class="title">
+            <h1>Progresso</h1>
+            <p id="sub">—</p>
           </div>
-          <div class="barWrap" aria-label="Barra de progresso">
+        </div>
+        <div class="chip" id="chip">0/0</div>
+      </div>
+
+      <div class="card">
+        <div class="pad">
+          <div class="row">
+            <div class="pct"><span id="pct">0</span>%</div>
+            <div class="count" id="count">0/0</div>
+          </div>
+          <div class="barWrap">
             <div class="bar" id="bar"></div>
           </div>
 
-          <div class="banner" id="banner">
-            <div class="b1">🎉 Parabéns! Ciclo completo.</div>
-            <div class="b2">Você chegou ao fim da lista. Reinicia e roda outro ciclo com mais velocidade — agora com menos fricção mental.</div>
-          </div>
-        </div>
+          <div class="divider"></div>
 
-        <div class="conceptCard">
           <div class="label">
             <span>Agora</span>
             <span class="tag" id="tag">—</span>
           </div>
+
           <p class="topic" id="topic">—</p>
-          <p class="mini" id="mini">Clique em “Próximo” para começar.</p>
+          <p class="mini" id="mini">—</p>
 
           <div class="actions">
-            <button class="btn btnPrimary" id="nextBtn">Próximo</button>
-            <button class="btn btnGhost" id="backBtn">Voltar 1</button>
-            <button class="btn btnDanger" id="resetBtn">Reset</button>
+            <button class="btn primary" id="nextBtn">Próximo</button>
+            <button class="btn ghost" id="backBtn">Voltar</button>
+            <button class="btn danger" id="resetBtn">Reset</button>
           </div>
-
-          <p class="sub" style="margin-top:12px;">
-            Dica de disciplina: quando aparecer um conceito, faça <b>1 mini-ação</b> (definir em 20s / escrever uma fórmula / 1 exemplo).
-          </p>
         </div>
       </div>
 
-      <!-- SIDE -->
-      <div class="card">
-        <div class="side">
-          <div class="sideTop">
-            <h3>Fila (visual)</h3>
-            <div class="hint">ordem fixa</div>
-          </div>
-          <div class="list" id="list"></div>
-
-          <p class="sub" style="margin-top:12px;">
-            Isso aqui é seu “mapa”. Ver o caminho reduz ansiedade e aumenta execução.
-          </p>
+      <div class="queue">
+        <div class="queueTop">
+          <div class="qTitle">Fila</div>
+          <div class="qMeta" id="qMeta">—</div>
         </div>
+        <div class="list" id="list"></div>
       </div>
 
     </div>
   </div>
 
-  <div class="toast" id="toast">Salvo ✅</div>
+  <div class="toast" id="toast">Salvo</div>
 
   <script>
-    // ===== CONFIG =====
-    const STORAGE_KEY = "progresso_estudos_v2_index";
-    // index = quantos conceitos já foram "consumidos"
-    // mostrando sempre o último visto (index-1)
+    const STORAGE_KEY = "progresso_estudos_v3_index";
 
-    // ===== SUA LISTA (em ordem) =====
-    // Você pode trocar/expandir isso depois. Mantive bem estruturado e “ITA-friendly”.
+    // Lista em ordem (edita aqui quando quiser)
     const conceitos = [
-      // Matemática
       { area:"Matemática", t:"Álgebra: equações e inequações", q:"Faça 1 inequação e interprete no eixo real." },
-      { area:"Matemática", t:"Sistemas lineares", q:"Quando tem solução única? (pense em determinante/posto)" },
-      { area:"Matemática", t:"Fatoração e produtos notáveis", q:"Fatore x²-9 e diga o padrão." },
-      { area:"Matemática", t:"Função afim e interpretação gráfica", q:"Explique o coeficiente angular em 1 frase." },
-      { area:"Matemática", t:"Função quadrática (vértice, discriminante)", q:"Como o Δ decide o nº de raízes?" },
-      { area:"Matemática", t:"Exponencial e logaritmo", q:"Domínio e comportamento: 2 linhas." },
+      { area:"Matemática", t:"Sistemas lineares", q:"Condição de solução única (det/posto)." },
+      { area:"Matemática", t:"Fatoração e produtos notáveis", q:"Fatore x²-9 e reconheça o padrão." },
+      { area:"Matemática", t:"Função afim", q:"Interprete coeficiente angular." },
+      { area:"Matemática", t:"Função quadrática", q:"Vértice e discriminante (Δ)." },
+      { area:"Matemática", t:"Exponencial e logaritmo", q:"Domínio + comportamento." },
       { area:"Matemática", t:"Trigonometria no ciclo", q:"Defina seno/cosseno no círculo." },
-      { area:"Matemática", t:"Identidades trigonométricas", q:"Escreva 1+tan²x=? e justifique." },
-      { area:"Matemática", t:"Geometria plana", q:"Escolha um teorema e aplique num exemplo." },
-      { area:"Matemática", t:"Geometria analítica (reta)", q:"Escreva a forma ax+by+c=0." },
-      { area:"Matemática", t:"Vetores e produto escalar", q:"Como detecta ortogonalidade?" },
-      { area:"Matemática", t:"Matrizes e determinantes", q:"Interprete determinante geometricamente." },
-      { area:"Matemática", t:"Probabilidade", q:"Defina P(A|B) e dê um exemplo." },
+      { area:"Matemática", t:"Identidades trigonométricas", q:"1 + tan²x = ? (justifique)." },
+      { area:"Matemática", t:"Geometria plana", q:"Aplique um teorema em 1 exemplo." },
+      { area:"Matemática", t:"Geometria analítica (reta)", q:"Forma ax+by+c=0." },
+      { area:"Matemática", t:"Vetores e produto escalar", q:"Critério de ortogonalidade." },
+      { area:"Matemática", t:"Matrizes e determinantes", q:"Interpretação geométrica." },
+      { area:"Matemática", t:"Probabilidade", q:"Defina P(A|B)." },
 
-      // Física
-      { area:"Física", t:"Análise dimensional", q:"Cheque a unidade de uma fórmula que você usa." },
-      { area:"Física", t:"Cinemática (MRU/MRUV)", q:"Escreva s(t) do MRUV." },
-      { area:"Física", t:"Leis de Newton", q:"Desenhe um diagrama de forças mentalmente." },
-      { area:"Física", t:"Trabalho e energia", q:"Quando W=ΔK vale?" },
+      { area:"Física", t:"Análise dimensional", q:"Cheque a unidade de uma fórmula." },
+      { area:"Física", t:"Cinemática (MRU/MRUV)", q:"Equação horária do MRUV." },
+      { area:"Física", t:"Leis de Newton", q:"Diagrama de forças (FBD)." },
+      { area:"Física", t:"Trabalho e energia", q:"Quando W = ΔK vale?" },
       { area:"Física", t:"Quantidade de movimento", q:"Conservação do momento: condição." },
-      { area:"Física", t:"Termologia", q:"Calor vs temperatura: diferença." },
-      { area:"Física", t:"Ondulatória", q:"v=λf: explique cada termo." },
-      { area:"Física", t:"Eletrodinâmica", q:"P=V²/R: derive de Ohm." },
+      { area:"Física", t:"Termologia", q:"Calor vs temperatura." },
+      { area:"Física", t:"Ondulatória", q:"v=λf (interprete)." },
+      { area:"Física", t:"Eletrodinâmica", q:"P=V²/R (ligue com Ohm)." },
 
-      // Química
       { area:"Química", t:"Estrutura atômica / Tabela periódica", q:"Explique periodicidade em 1 ideia." },
-      { area:"Química", t:"Ligações químicas", q:"Critério: iônica vs covalente." },
-      { area:"Química", t:"Estequiometria", q:"m → n → proporção → resposta." },
-      { area:"Química", t:"Equilíbrio", q:"Le Châtelier: um exemplo." },
-
-      // Redação/Português (se quiser manter)
-      { area:"Português", t:"Interpretação", q:"Tese, argumento e inferência: defina." },
-      { area:"Redação", t:"Estrutura dissertativa", q:"Tese + 2 argumentos + conclusão (esqueleto)." },
+      { area:"Química", t:"Ligações químicas", q:"Iônica vs covalente: critério." },
+      { area:"Química", t:"Estequiometria", q:"m → n → proporção." },
+      { area:"Química", t:"Equilíbrio químico", q:"Le Châtelier: exemplo." },
     ];
 
     const total = conceitos.length;
 
-    // ===== ELEMENTOS =====
     const pctEl = document.getElementById("pct");
-    const posEl = document.getElementById("pos");
-    const totalEl = document.getElementById("total");
     const barEl = document.getElementById("bar");
     const topicEl = document.getElementById("topic");
     const miniEl = document.getElementById("mini");
     const tagEl = document.getElementById("tag");
     const listEl = document.getElementById("list");
-    const bannerEl = document.getElementById("banner");
+
+    const countEl = document.getElementById("count");
+    const chipEl = document.getElementById("chip");
+    const qMetaEl = document.getElementById("qMeta");
+    const subEl = document.getElementById("sub");
 
     const nextBtn = document.getElementById("nextBtn");
     const backBtn = document.getElementById("backBtn");
@@ -608,8 +530,6 @@
     const toast = document.getElementById("toast");
     let toastTimer = null;
 
-    totalEl.textContent = total;
-
     function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
 
     function loadIndex(){
@@ -617,17 +537,16 @@
       const n = raw === null ? 0 : Number(raw);
       return Number.isFinite(n) ? clamp(n,0,total) : 0;
     }
-
     function saveIndex(){
       localStorage.setItem(STORAGE_KEY, String(index));
-      showToast("Salvo ✅");
+      showToast("Salvo");
     }
 
     function showToast(text){
       toast.textContent = text;
       toast.classList.add("show");
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(()=>toast.classList.remove("show"), 900);
+      toastTimer = setTimeout(()=>toast.classList.remove("show"), 750);
     }
 
     function percent(){
@@ -641,11 +560,11 @@
         const item = document.createElement("div");
         item.className = "item";
         if (i < index) item.classList.add("done");
-        if (i === index) item.classList.add("current"); // próximo a fazer
+        if (i === index) item.classList.add("current");
 
         item.innerHTML = `
-          <div class="iDot"></div>
-          <div class="iText">
+          <div class="dot"></div>
+          <div class="text">
             <div class="a">${c.area}</div>
             <div class="b">${c.t}</div>
           </div>
@@ -657,51 +576,42 @@
     function render(){
       const p = percent();
       pctEl.textContent = p;
-      posEl.textContent = index;
       barEl.style.width = p + "%";
+
+      countEl.textContent = `${index}/${total}`;
+      chipEl.textContent = `${index}/${total}`;
+      qMetaEl.textContent = `${total} itens`;
+      subEl.textContent = `${total} conceitos`;
 
       backBtn.disabled = (index <= 0);
       nextBtn.disabled = (index >= total);
 
-      bannerEl.style.display = (index >= total) ? "block" : "none";
-
       if(index === 0){
         tagEl.textContent = "INÍCIO";
-        topicEl.textContent = "—";
-        miniEl.textContent = "Clique em “Próximo” para começar do 1º conceito.";
+        topicEl.textContent = "Toque em Próximo";
+        miniEl.textContent = "";
       }else{
         const c = conceitos[index-1];
         tagEl.textContent = c.area.toUpperCase();
         topicEl.textContent = c.t;
-        miniEl.textContent = "Mini-ação: " + c.q;
+        miniEl.textContent = c.q;
       }
 
       buildList();
 
-      // Auto-scroll pra deixar o "current" visível
       const current = listEl.querySelector(".item.current");
-      if(current){
-        current.scrollIntoView({ block:"nearest", behavior:"smooth" });
-      }
+      if(current) current.scrollIntoView({ block:"nearest", behavior:"smooth" });
     }
 
-    // ===== ESTADO =====
     let index = loadIndex();
 
-    // ===== AÇÕES =====
     nextBtn.addEventListener("click", ()=>{
       if(index >= total) return;
       index++;
       saveIndex();
       render();
-
-      if(index >= total){
-        showToast("Ciclo completo 🎉");
-        // vibração no mobile (se disponível)
-        if(navigator.vibrate) navigator.vibrate([40, 40, 60]);
-      } else {
-        if(navigator.vibrate) navigator.vibrate(20);
-      }
+      if(navigator.vibrate) navigator.vibrate(18);
+      if(index >= total && navigator.vibrate) navigator.vibrate([35, 40, 60]);
     });
 
     backBtn.addEventListener("click", ()=>{
@@ -709,20 +619,18 @@
       index--;
       saveIndex();
       render();
-      if(navigator.vibrate) navigator.vibrate(15);
+      if(navigator.vibrate) navigator.vibrate(12);
     });
 
     resetBtn.addEventListener("click", ()=>{
-      const ok = confirm("Resetar o progresso? (zera tudo)");
+      const ok = confirm("Resetar progresso?");
       if(!ok) return;
       index = 0;
       saveIndex();
       render();
-      showToast("Resetado ↩️");
-      if(navigator.vibrate) navigator.vibrate([30, 20, 30]);
+      if(navigator.vibrate) navigator.vibrate([25, 25, 25]);
     });
 
-    // ===== START =====
     render();
   </script>
 </body>
